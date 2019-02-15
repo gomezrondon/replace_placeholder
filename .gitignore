@@ -1,0 +1,48 @@
+# Mac
+.DS_Store
+
+#
+# CLIENT SIDE
+# 
+
+#yeomen
+# node_modules
+client/node_modules
+client/report
+client/coverage
+client/build
+client/tmp
+
+# Log files
+*.log
+
+#bower_components
+client/bower_components
+
+### Node ###
+# Logs
+src/main/resources/static/logs
+
+# Runtime data
+src/main/resources/static/pids
+*.pid
+*.seed
+
+.idea
+
+#Gradle
+build
+.gradle
+/bin/
+
+#Eclipse
+.classpath
+.project
+.settings
+
+#NetBeans
+.nb*
+
+#VS2010 - User preferences
+etc/DB/SQL Server/PW-ApplicationInit2010/PW-ApplicationInit2010.suo
+out/
