@@ -6,13 +6,13 @@ import java.io.File
 
 ---- file1
 example:
-call some_storeProcedure('user-1','value-1');
+call some_storeProcedure(':USER',':VALUE');
 
 ---- file2
 
-user-1:javier|value-1:admin
-user-1:maria|value-1:admin,normal user
-user-1:juan|value-1:normal user, security
+USER:javier|VALUE:admin
+USER:maria|VALUE:admin,normal user
+USER:juan|VALUE:normal user, security
 
 // java -jar replace_placeholder.jar "C:\temp\file1.txt" "C:\temp\file2.txt"
 
@@ -28,8 +28,10 @@ fun main(args : Array<String>) {
         var fileScriptValues = File(file2).readLines()
 
         //how to pick up the placeHolder
-        var regexStr = """'(.*?)'""";
-        val placeHolderList = findRegexMatches(regexStr, fileScript).map { it.replace("'","") }
+        // :[\w]+
+     //   var regexStr = """'(.*?)'""";
+        var regexStr = """:[\w]+""";
+        val placeHolderList = findRegexMatches(regexStr, fileScript).map { it.replace(":","") }
         regexStr = """(?<=xxx:)(.*?)(?=\||$)""";
 
         val fileValueList = fileScriptValues.map { line -> line.split("|") }
@@ -50,7 +52,7 @@ fun main(args : Array<String>) {
 
         }
 
-        listOfResults.forEach { println("\n $it") }
+        listOfResults.forEach { println("\n ${it}") }
 
     }
     println("\n total time:$measureTimeMillis milliseconds")
@@ -65,12 +67,12 @@ private fun pepe(regexStr: String, placeHolder: String, line: String, copyOfScri
         if (split.size > 1) {
             split.forEach { s ->
                 //       println("2 $placeHolder :  $s")
-                var copyOfCopy = copyOfScript1.replace(placeHolder, s.trim())
+                var copyOfCopy = copyOfScript1.replace(":"+placeHolder, s.trim())
                 listOfResults.add(copyOfCopy)
             }
         } else {
             //   println("1 $placeHolder :  $findRegexMatch")
-            copyOfScript1 = copyOfScript1.replace(placeHolder, findRegexMatch)
+            copyOfScript1 = copyOfScript1.replace(":"+placeHolder, findRegexMatch)
             if (counter == totalPlaceHolder) {
                 listOfResults.add(copyOfScript1)
             }
