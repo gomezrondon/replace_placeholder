@@ -1,5 +1,6 @@
 import java.io.File
-
+import java.lang.ProcessBuilder.Redirect
+import java.util.concurrent.TimeUnit
 
 
 /*
@@ -26,6 +27,8 @@ fun main(args : Array<String>) {
 
         var fileScript = File(file1).readText()
         var fileScriptValues = File(file2).readLines()
+
+   //     "cmd.exe /c gradle clean build".runCommand(timeout = 60)
 
         //how to pick up the placeHolder
         // :[\w]+
@@ -56,6 +59,23 @@ fun main(args : Array<String>) {
 
     }
     println("\n total time:$measureTimeMillis milliseconds")
+}
+
+
+
+fun String.runCommand(workingDir: File? = null, timeout:Long) {
+    val process = ProcessBuilder(*split(" ").toTypedArray())
+            .directory(workingDir)
+            .redirectOutput(Redirect.INHERIT)
+            .redirectError(Redirect.INHERIT)
+            .start()
+    if (!process.waitFor(timeout, TimeUnit.SECONDS)) {
+        process.destroy()
+        throw RuntimeException("execution timed out: $this")
+    }
+    if (process.exitValue() != 0) {
+        throw RuntimeException("execution failed with code ${process.exitValue()}: $this")
+    }
 }
 
 private fun pepe(regexStr: String, placeHolder: String, line: String, copyOfScript: String, listOfResults: ArrayList<String>, counter: Int, totalPlaceHolder: Int):String {
