@@ -52,7 +52,7 @@ fun main(args : Array<String>) {
 
         }
 
-        listOfResults.forEach { println("\n ${it}") }
+        listOfResults.forEach { println("${it}") }
 
     }
     println("\n total time:$measureTimeMillis milliseconds")
